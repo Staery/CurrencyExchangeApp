@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- .NET Framework 4.8: the Telerik UI for WPF assemblies in lib/ are built for .NET Framework. -->
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>CurrencyExchangeApp</RootNamespace>
+    <AssemblyName>CurrencyExchangeApp</AssemblyName>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <AssemblyTitle>Currency Exchange — official NBRB rates</AssemblyTitle>
+    <TelerikDir>$(MSBuildThisFileDirectory)..\..\lib\RCWPF\2022.1.222.45\</TelerikDir>
+  </PropertyGroup>
+
+  <!-- Telerik UI for WPF R1 2022: grid, chart and date pickers. -->
+  <ItemGroup>
+    <Reference Include="Telerik.Windows.Controls" HintPath="$(TelerikDir)Telerik.Windows.Controls.dll" />
+    <Reference Include="Telerik.Windows.Controls.Chart" HintPath="$(TelerikDir)Telerik.Windows.Controls.Chart.dll" />
+    <Reference Include="Telerik.Windows.Controls.Data" HintPath="$(TelerikDir)Telerik.Windows.Controls.Data.dll" />
+    <Reference Include="Telerik.Windows.Controls.GridView" HintPath="$(TelerikDir)Telerik.Windows.Controls.GridView.dll" />
+    <Reference Include="Telerik.Windows.Controls.Input" HintPath="$(TelerikDir)Telerik.Windows.Controls.Input.dll" />
+    <Reference Include="Telerik.Windows.Data" HintPath="$(TelerikDir)Telerik.Windows.Data.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\app.ico" />
+    <Resource Include="Assets\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Lets the project build without the .NET Framework Developer Pack installed (e.g. on CI). -->
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CurrencyExchangeApp.Core\CurrencyExchangeApp.Core.csproj" />
+  </ItemGroup>
+
+</Project>
