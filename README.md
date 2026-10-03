@@ -24,7 +24,15 @@ Currency Exchange downloads the history of official exchange rates from the
 and period you choose. It shows the rates in a **Telerik RadGridView** (grouping, filtering, inline editing) and in an
 interactive **RadCartesianChart**, and keeps the data on disk so the app works offline.
 
-<!-- screenshots -->
+## 📸 Screenshots
+
+![Rates, statistics and chart](docs/screenshots/overview.png)
+
+*RadGridView grouped by currency code (drag a column header to the group panel):*
+
+![Grouping in RadGridView](docs/screenshots/grouping.png)
+
+<sub>The screenshots show demo data.</sub>
 
 ## ✨ Features
 
