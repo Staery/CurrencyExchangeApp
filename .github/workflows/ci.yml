@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  build:
+    name: Build & test
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore CurrencyExchangeApp.sln
+
+      - name: Build
+        run: dotnet build CurrencyExchangeApp.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test CurrencyExchangeApp.sln --configuration Release --no-build --logger "trx;LogFileName=results.trx" --collect "XPlat Code Coverage"
+
+      # .NET Framework 4.8 app (Telerik UI for WPF), so the output is an exe with its DLLs.
+      - name: Publish app
+        run: dotnet publish src/CurrencyExchangeApp/CurrencyExchangeApp.csproj --configuration Release --no-restore --output publish
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CurrencyExchangeApp-net48
+          path: publish/
+
+  release:
+    name: GitHub release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: CurrencyExchangeApp-net48
+          path: CurrencyExchangeApp
+
+      - name: Package
+        run: zip -r CurrencyExchangeApp-${{ github.ref_name }}-net48.zip CurrencyExchangeApp
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: CurrencyExchangeApp-*.zip
+          generate_release_notes: true
